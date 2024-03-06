@@ -1,0 +1,25 @@
+{
+    "peoples" : [
+    {
+        "id": 1,
+        "data": "01/01/2024",
+        "homens": 20,
+        "mulheres": 10,
+        "criancas": 10
+    },
+    {
+        "id": 2,
+        "data": "01/01/2024",
+        "homens": 20,
+        "mulheres": 10,
+        "criancas": 10
+    },
+    {
+        "id": 3,
+        "data": "01/01/2024",
+        "homens": 20,
+        "mulheres": 10,
+        "criancas": 10
+    }
+]
+}
