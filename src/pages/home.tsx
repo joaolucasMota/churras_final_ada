@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Table from "../components/Table";
 import { getApi } from "../services/axios";
 import Churrasco from "../utils/class";
@@ -7,16 +7,18 @@ import Churrasco from "../utils/class";
 
 export default function Home() {
 
-    // const exemplo = new Churrasco(10,10,10);
-    // console.log(exemplo.calcularTodos())
 
-    var peoples;
+    const [peoples, setPeoples] = useState<string[]>([]);
 
     useEffect(() => {
         const onMount = async () => {
             try {
-                peoples = await getApi<IPeople>('peoples');
-                console.log(peoples.data)
+                let resp = await getApi<IPeople>('peoples');
+                setPeoples((prevState) => ({
+                    ...prevState, 
+                    ...resp.data,
+                }))
+                
             } catch (error) {
                 console.error(error)
             } finally {
@@ -24,11 +26,20 @@ export default function Home() {
             }
         }
         onMount();
+        generateData();
     }, [])
 
-    const data = new Churrasco(10,10,10);
-    console.log(exemplo.calcularTodos())
+    const generateData = () => {
+        peoples.map(people => {
+            return console.log(people)
+        })
+    }
 
+    // const data = new Churrasco(10,10,10);
+    // console.log(data.calcularTodos())
+
+
+  
 
 
 
