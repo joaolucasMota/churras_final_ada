@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Table from "../components/Table";
 import { getApi } from "../services/axios";
-import Churrasco from "../utils/class";
 
 
 
@@ -26,14 +25,8 @@ export default function Home() {
             }
         }
         onMount();
-        generateData();
     }, [])
 
-    const generateData = () => {
-        peoples.map(people => {
-            return console.log(people)
-        })
-    }
 
     // const data = new Churrasco(10,10,10);
     // console.log(data.calcularTodos())
