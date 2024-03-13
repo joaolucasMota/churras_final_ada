@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useContext, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { deleteApi, getApi, postApi, putApi } from "../services/axios";
 import Churrasco from "../utils/class";
 
@@ -22,25 +22,7 @@ interface IChurrasContext {
     editChurrasco: (id: number, newData: any) => Promise<void>;
 }
 
-const LOADING_CONTEXT_DEFAULT_VALUE: IChurrasContext = {
-    churras: {},
-    setChurras: () => null,
-    infoChurras: [],
-    addPerson: () => Promise.resolve(),
-    deleteChurrasco: () => Promise.resolve(),
-    editChurrasco: () => Promise.resolve(),
-}
-
-const ChurrasContext = createContext<IChurrasContext>(LOADING_CONTEXT_DEFAULT_VALUE);
-
-interface IChurrasProvider {
-    children: React.ReactNode;
-}
-
-
-
-const ChurrasProvider = ({ children }: IChurrasProvider) => {
-
+const usecChurras = () => {
     const [churras, setChurras] = useState({});
     const [infoChurras, setInfoChurras] = useState<IChurrasContext['infoChurras']>([]);
 
@@ -103,23 +85,9 @@ const ChurrasProvider = ({ children }: IChurrasProvider) => {
         }
     };
 
-
-    return (
-        <ChurrasContext.Provider
-            value={{
-                churras,
-                setChurras,
-                infoChurras,
-                addPerson,
-                deleteChurrasco,
-                editChurrasco,
-            }}
-        >
-            {children}
-        </ChurrasContext.Provider>
-    );
+    return{
+        editChurrasco,
+        addPerson,
+        deleteChurrasco
+    }
 }
-
-const useChurras = () => useContext(ChurrasContext);
-
-export { ChurrasProvider, useChurras };
