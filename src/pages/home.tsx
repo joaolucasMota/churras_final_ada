@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
 import Table from "../components/Table";
-import { getApi } from "../services/axios";
 
 
 

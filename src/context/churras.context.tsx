@@ -20,6 +20,7 @@ interface IChurrasContext {
     addPerson: (data: any) => Promise<void>;
     deleteChurrasco: (id: number) => Promise<void>;
     editChurrasco: (id: number, newData: any) => Promise<void>;
+    getChurrascoById: (id: number) => Promise<any>;
 }
 
 const LOADING_CONTEXT_DEFAULT_VALUE: IChurrasContext = {
@@ -29,6 +30,7 @@ const LOADING_CONTEXT_DEFAULT_VALUE: IChurrasContext = {
     addPerson: () => Promise.resolve(),
     deleteChurrasco: () => Promise.resolve(),
     editChurrasco: () => Promise.resolve(),
+    getChurrascoById: () => Promise.resolve(),
 }
 
 const ChurrasContext = createContext<IChurrasContext>(LOADING_CONTEXT_DEFAULT_VALUE);
@@ -62,6 +64,16 @@ const ChurrasProvider = ({ children }: IChurrasProvider) => {
             calcularTotaisChurrasco(churras);
         }
     }, [churras]);
+
+    const getChurrascoById = async (id: number) => {
+        try {
+            const response = await getApi(`peoples/${id}`);
+            return response.data;
+        } catch (error) {
+            console.error('Erro ao obter churrasco:', error);
+            throw error; // Propagar o erro para o chamador
+        }
+    };
 
     const calcularTotaisChurrasco = (objetos: any) => {
         const resultados: IChurrasContext['infoChurras'] = [];
@@ -113,6 +125,7 @@ const ChurrasProvider = ({ children }: IChurrasProvider) => {
                 addPerson,
                 deleteChurrasco,
                 editChurrasco,
+                getChurrascoById,
             }}
         >
             {children}

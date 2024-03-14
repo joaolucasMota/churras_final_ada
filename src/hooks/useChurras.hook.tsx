@@ -22,7 +22,8 @@ interface IChurrasContext {
     editChurrasco: (id: number, newData: any) => Promise<void>;
 }
 
-const usecChurras = () => {
+const useChurras = () => {
+
     const [churras, setChurras] = useState({});
     const [infoChurras, setInfoChurras] = useState<IChurrasContext['infoChurras']>([]);
 
@@ -33,6 +34,7 @@ const usecChurras = () => {
                 setChurras(resp.data);
             } catch (error) {
                 console.error(error)
+                console.log(infoChurras)
             }
         };
 
@@ -91,3 +93,5 @@ const usecChurras = () => {
         deleteChurrasco
     }
 }
+
+export {useChurras};

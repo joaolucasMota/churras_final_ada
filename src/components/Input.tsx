@@ -1,4 +1,4 @@
-import { FieldError, FieldErrors } from 'react-hook-form';
+import { FieldError } from 'react-hook-form';
 
 interface IProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     register: any;

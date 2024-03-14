@@ -1,27 +1,16 @@
+// Navbar.js
+import { Link } from "react-router-dom";
+
 export default function Navbar() {
-  const handleHomeClick = () => {
-    window.location.href = '/';
-  };
-
-  const handleCreateChurrascoClick = () => {
-    window.location.href = '/form';
-  };
-
   return (
     <>
       <nav>
         <ul className="flex flex-row text-xl font-medium">
-          <li
-            className="mr-10 cursor-pointer hover:text-teal-50 duration-500"
-            onClick={handleHomeClick}
-          >
-            Home
+          <li className="mr-10 cursor-pointer hover:text-teal-50 duration-500">
+            <Link to="/">Home</Link>
           </li>
-          <li
-            className="ml-10 cursor-pointer hover:text-teal-50 duration-500"
-            onClick={handleCreateChurrascoClick}
-          >
-            Criar Churrasco
+          <li className="ml-10 cursor-pointer hover:text-teal-50 duration-500">
+            <Link to="/form">Criar Churrasco</Link>
           </li>
         </ul>
       </nav>
