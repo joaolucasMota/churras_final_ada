@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useChurras } from '../context/churras.context';
 import Form from './Form';
+import { getApi } from '../services/axios';
 
 
 interface TableProps {}
 
 const Table: React.FC<TableProps> = () => {
 
-  const { infoChurras, deleteChurrasco } = useChurras();
+  const { infoChurras, deleteChurrasco, churrascoEditado } = useChurras();
   const [editingChurrascoId, setEditingChurrascoId] = useState<any | null>(null);
 
   useEffect(() => {
     console.log('infoChurras mudou:', infoChurras);
-  }, [infoChurras]);
+  }, [infoChurras, churrascoEditado]);
 
 
   const onDelete = async (id: string) => {

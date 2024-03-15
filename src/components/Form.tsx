@@ -57,7 +57,6 @@ const Form: React.FC<FormProps> = ({ churrascoId, onCancel }) => {
       const id = uuidv4(); 
   
       if (churrascoId) {
-        console.log(churrascoId, data)
         await editChurrasco(churrascoId, data);
       } else {
         await addPerson({ ...data, id }); 
