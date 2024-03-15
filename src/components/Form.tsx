@@ -5,8 +5,10 @@ import * as yup from 'yup';
 import { Input } from './Input';
 import { useChurras } from '../context/churras.context';
 import { useNavigate } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 
 interface ChurrascoData {
+  id?: string;
   homens: number;
   mulheres: number;
   criancas: number;
@@ -52,22 +54,26 @@ const Form: React.FC<FormProps> = ({ churrascoId, onCancel }) => {
 
   const onSubmit = async (data: ChurrascoData) => {
     try {
+      const id = uuidv4(); 
+  
       if (churrascoId) {
+        console.log(churrascoId, data)
         await editChurrasco(churrascoId, data);
       } else {
-        await addPerson(data); 
+        await addPerson({ ...data, id }); 
       }
-      setFormSubmitted(true); 
-      
+      setFormSubmitted(true);
     } catch (error) {
       console.error('Erro ao editar/adicionar churrasco:', error);
     }
   };
+  
 
-  if (formSubmitted) {
-    navigate('/');
-    return ; 
-  }
+  useEffect(() => {
+    if (formSubmitted) {
+      navigate('/');
+    }
+  }, [formSubmitted, navigate]);
 
   return (
     <div className="flex justify-center mt-8">

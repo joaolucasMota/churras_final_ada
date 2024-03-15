@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useChurras } from '../context/churras.context';
 import Form from './Form';
 
@@ -7,17 +7,20 @@ interface TableProps {}
 
 const Table: React.FC<TableProps> = () => {
 
-
   const { infoChurras, deleteChurrasco } = useChurras();
   const [editingChurrascoId, setEditingChurrascoId] = useState<any | null>(null);
 
+  useEffect(() => {
+    console.log('infoChurras mudou:', infoChurras);
+  }, [infoChurras]);
 
-  const onDelete = async (id: any) => {
+
+  const onDelete = async (id: string) => {
     try {
-      deleteChurrasco(id);
-      alert('Churrasco deletado, recarregue para visualizar');
-    } catch {
-      console.error('erro ao excluir churrasco');
+      await deleteChurrasco(id); 
+      console.log(id);
+    } catch (error) {
+      console.error('Erro ao excluir churrasco:', error);
     }
   };
 
@@ -58,7 +61,7 @@ const Table: React.FC<TableProps> = () => {
                   <td className="px-6 py-4 whitespace-nowrap">{row.totalCerveja}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <button onClick={() => onEdit(row.id || '')} className="bg-blue-500 text-white py-1 px-3 rounded mr-2">Editar</button>
-                    <button onClick={() => onDelete(row.id)} className="bg-red-500 text-white py-1 px-3 rounded">Excluir</button>
+                    <button onClick={() => onDelete(row.id || '')} className="bg-red-500 text-white py-1 px-3 rounded">Excluir</button>
                   </td>
                 </tr>
               ))}

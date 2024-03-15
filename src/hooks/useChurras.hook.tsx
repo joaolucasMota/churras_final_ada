@@ -27,6 +27,8 @@ const useChurras = () => {
     const [churras, setChurras] = useState({});
     const [infoChurras, setInfoChurras] = useState<IChurrasContext['infoChurras']>([]);
 
+    console.log(infoChurras)
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -34,7 +36,6 @@ const useChurras = () => {
                 setChurras(resp.data);
             } catch (error) {
                 console.error(error)
-                console.log(infoChurras)
             }
         };
 

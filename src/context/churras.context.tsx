@@ -18,7 +18,7 @@ interface IChurrasContext {
         parametrosEdit: ReactNode;
     }[];
     addPerson: (data: any) => Promise<void>;
-    deleteChurrasco: (id: number) => Promise<void>;
+    deleteChurrasco: (id: string) => Promise<void>;
     editChurrasco: (id: number, newData: any) => Promise<void>;
     getChurrascoById: (id: number) => Promise<any>;
 }
@@ -89,8 +89,9 @@ const ChurrasProvider = ({ children }: IChurrasProvider) => {
         setInfoChurras(resultados);
     };
 
-    const deleteChurrasco = async (id: number) => {
+    const deleteChurrasco = async (id: string) => {
         try {
+            console.log(typeof(id))
             await deleteApi(`peoples/${id}`);
 
         } catch (error) {
