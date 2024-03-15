@@ -1,7 +1,6 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
-import { deleteApi, getApi, postApi, putApi } from "../services/axios";
+import { getApi, postApi } from "../services/axios";
 import Churrasco from "../utils/class";
-import { bool, boolean } from "yup";
 
 interface IChurrasContext {
     churras: object;
