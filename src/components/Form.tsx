@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Input } from './Input';
 import { useChurras } from '../context/churras.context';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 interface ChurrascoData {
@@ -14,34 +14,28 @@ interface ChurrascoData {
   criancas: number;
 }
 
-interface FormProps {
-  churrascoId?: number; // Tornando o ID opcional
-  onCancel: () => void;
-}
-
 const schema = yup.object({
-  homens: yup.number().positive('Valor inválido').integer('Valor inválido').typeError('Digite um número').required('Campo obrigatório'),
-  mulheres: yup.number().positive('Valor inválido').integer('Valor inválido').typeError('Digite um número').required('Campo obrigatório'),
-  criancas: yup.number().positive('Valor inválido').integer('Valor inválido').typeError('Digite um número').required('Campo obrigatório'),
+  homens: yup.number().integer('Valor inválido').typeError('Digite um número').required('Campo obrigatório'),
+  mulheres: yup.number().integer('Valor inválido').typeError('Digite um número').required('Campo obrigatório'),
+  criancas: yup.number().integer('Valor inválido').typeError('Digite um número').required('Campo obrigatório'),
 }).required();
 
-
-const Form: React.FC<FormProps> = ({ churrascoId, onCancel }) => {
+const Form = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<ChurrascoData>({
     resolver: yupResolver(schema),
     mode: 'onChange',
   });
 
+  const { id } = useParams<{ id: string }>();
   const { getChurrascoById, addPerson, editChurrasco } = useChurras();
   const [churrascoData, setChurrascoData] = useState<ChurrascoData | null>(null);
-  const [formSubmitted, setFormSubmitted] = useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
-      if (churrascoId) {
+      if (id) {
         try {
-          const churrasco = await getChurrascoById(churrascoId);
+          const churrasco = await getChurrascoById(id);
           setChurrascoData(churrasco);
         } catch (error) {
           console.error('Erro ao obter churrasco:', error);
@@ -50,35 +44,27 @@ const Form: React.FC<FormProps> = ({ churrascoId, onCancel }) => {
     };
 
     fetchData();
-  }, [churrascoId, getChurrascoById]);
+  }, [id, getChurrascoById]);
 
   const onSubmit = async (data: ChurrascoData) => {
     try {
-      const id = uuidv4(); 
-  
-      if (churrascoId) {
-        await editChurrasco(churrascoId, data);
+      if (id) {
+        await editChurrasco(id, data);
       } else {
-        await addPerson({ ...data, id }); 
+        const newId = uuidv4();
+        await addPerson({ ...data, id: newId });
       }
-      setFormSubmitted(true);
+      navigate('/');
     } catch (error) {
       console.error('Erro ao editar/adicionar churrasco:', error);
     }
   };
-  
-
-  useEffect(() => {
-    if (formSubmitted) {
-      navigate('/');
-    }
-  }, [formSubmitted, navigate]);
 
   return (
     <div className="flex justify-center mt-8">
       <div className="w-full max-w-xl">
         <fieldset className="border border-solid border-blue-900 p-3">
-          <legend className="text-sm font-bold">{churrascoId ? 'Editar Churrasco' : 'Criar Churrasco'}</legend>
+          <legend className="text-sm font-bold">{id ? 'Editar Churrasco' : 'Criar Churrasco'}</legend>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
               <label htmlFor="homens" className="block">Homens:</label>
@@ -94,7 +80,7 @@ const Form: React.FC<FormProps> = ({ churrascoId, onCancel }) => {
             </div>
             <div className="flex justify-end">
               <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded mr-5">Salvar</button>
-              <button type="button" onClick={onCancel} className="bg-gray-300 text-gray-700 py-2 px-4 rounded">Cancelar</button>
+              <Link to="/" className="bg-gray-300 text-gray-700 py-2 px-4 rounded">Cancelar</Link>
             </div>
           </form>
         </fieldset>

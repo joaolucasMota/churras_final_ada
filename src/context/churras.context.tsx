@@ -20,8 +20,8 @@ interface IChurrasContext {
     }[];
     addPerson: (data: any) => Promise<void>;
     deleteChurrasco: (id: string) => Promise<void>;
-    editChurrasco: (id: number, newData: any) => Promise<void>;
-    getChurrascoById: (id: number) => Promise<any>;
+    editChurrasco: (id: string, newData: any) => Promise<void>;
+    getChurrascoById: (id: string) => Promise<any>;
     churrascoEditado : boolean;
 }
 
@@ -61,7 +61,11 @@ const ChurrasProvider = ({ children }: IChurrasProvider) => {
         };
 
         fetchData();
-    }, []);
+        if (churrascoEditado) {
+            fetchData(); // Chamando a função fetchData quando churrascoEditado mudar
+            setChurrascoEditado(false); // Resetando churrascoEditado para false após a requisição
+        }
+    }, [churrascoEditado]);
 
     useEffect(() => {
         if (churras && Object.keys(churras).length > 0) {
@@ -69,7 +73,7 @@ const ChurrasProvider = ({ children }: IChurrasProvider) => {
         }
     }, [churras]);
 
-    const getChurrascoById = async (id: number) => {
+    const getChurrascoById = async (id: string) => {
         try {
             const response = await getApi(`peoples/${id}`);
             return response.data;
@@ -104,6 +108,7 @@ const ChurrasProvider = ({ children }: IChurrasProvider) => {
             }
     
             console.log(`Churrasco com ID ${id} excluído com sucesso`);
+            setChurrascoEditado(true);
         } catch (error) {
             console.error('Erro ao excluir churrasco:', error);
         }
@@ -113,12 +118,13 @@ const ChurrasProvider = ({ children }: IChurrasProvider) => {
         try {
             const response = await postApi('peoples', data);
             console.log('Resposta do backend:', response.data);
+            setChurrascoEditado(true);
         } catch (error) {
             console.error('Erro ao adicionar pessoa:', error);
         }
     };
 
-    const editChurrasco = async (id: number, newData: any) => {
+    const editChurrasco = async (id: string, newData: any) => {
         try {
             const response = await fetch(`${import.meta.env.VITE_BASE_URL}/peoples/${id}`, {
                 method: 'PUT',
@@ -133,7 +139,7 @@ const ChurrasProvider = ({ children }: IChurrasProvider) => {
             }
     
             console.log(`Churrasco com ID ${id} editado com sucesso`);
-            setChurrascoEditado(true); // Definindo que a edição foi realizada com sucesso
+            setChurrascoEditado(true); 
         } catch (error) {
             console.error('Erro ao editar churrasco:', error);
         }

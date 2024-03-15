@@ -1,40 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useChurras } from '../context/churras.context';
-import Form from './Form';
-import { getApi } from '../services/axios';
+import { Link } from 'react-router-dom';
 
 
-interface TableProps {}
+interface TableProps { }
 
 const Table: React.FC<TableProps> = () => {
 
   const { infoChurras, deleteChurrasco, churrascoEditado } = useChurras();
-  const [editingChurrascoId, setEditingChurrascoId] = useState<any | null>(null);
 
   useEffect(() => {
     console.log('infoChurras mudou:', infoChurras);
-  }, [infoChurras, churrascoEditado]);
+}, [infoChurras, churrascoEditado]);
+
 
 
   const onDelete = async (id: string) => {
     try {
-      await deleteChurrasco(id); 
+      await deleteChurrasco(id);
       console.log(id);
     } catch (error) {
       console.error('Erro ao excluir churrasco:', error);
     }
   };
 
-  const onEdit = (id: string) => {
-    setEditingChurrascoId(id);
-  };
+
 
   return (
-    <div>
-       {editingChurrascoId ? (
-        <Form churrascoId={editingChurrascoId} onCancel={() => setEditingChurrascoId(null)} />
-      ) : (
-        <div className="mt-8 ml-20 mr-20 mx-auto">
+    <div className="mt-8 ml-20 mr-20 mx-auto">
       <table className="min-w-full divide-y divide-gray-200 border border-gray-200">
         {infoChurras.length > 0 ? (
           <>
@@ -61,7 +54,7 @@ const Table: React.FC<TableProps> = () => {
                   <td className="px-6 py-4 whitespace-nowrap">{row.totalRefrigerante}</td>
                   <td className="px-6 py-4 whitespace-nowrap">{row.totalCerveja}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <button onClick={() => onEdit(row.id || '')} className="bg-blue-500 text-white py-1 px-3 rounded mr-2">Editar</button>
+                    <Link to={`/form/${row.id}`} className="bg-blue-500 text-white py-1 px-3 rounded mr-2">Editar</Link>
                     <button onClick={() => onDelete(row.id || '')} className="bg-red-500 text-white py-1 px-3 rounded">Excluir</button>
                   </td>
                 </tr>
@@ -77,9 +70,6 @@ const Table: React.FC<TableProps> = () => {
         )}
       </table>
     </div>
-      )}
-    </div>
-    
   );
 };
 

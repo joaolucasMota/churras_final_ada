@@ -30,7 +30,8 @@ const Routes = () => {
         <Suspense fallback={<div>Carregando...</div>}>
           <RoutesDom>
             <Route path="/" element={<Home />} />
-            <Route path="/form" element={<Form churrascoId={0} onCancel={() => {}} />} />
+            <Route path="/form" element={<Form />} />
+            <Route path="/form/:id" element={<Form />}/>
           </RoutesDom>
         </Suspense>
       </Layout>
