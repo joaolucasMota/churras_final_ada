@@ -1,9 +1,7 @@
-import  Routes  from "./Routes";
-import { ChurrasProvider } from "./context/churras.context";
+import Routes from "./routes";
+import {ChurrasProvider} from "./context/churras.context";
 
 function App() {
-
-
   return (
     <ChurrasProvider>
       <Routes/>

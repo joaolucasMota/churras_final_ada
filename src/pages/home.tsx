@@ -1,12 +1,9 @@
-import Table from "../components/Table";
-
-
+import Table from "../components/table.tsx";
 
 export default function Home() {
-
-    return (
-        <div>
-            <Table />
-        </div>
-    )
+  return (
+    <div>
+      <Table/>
+    </div>
+  )
 }
