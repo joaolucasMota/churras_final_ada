@@ -5,4 +5,4 @@
 <li>Jose Weverton</li>
 <li>Marcelo Santana</li>
 
-<p>Deploy: <a>https://churras-final-ada.vercel.app/</a></p>
+<a>https://churras-final-ada.vercel.app/</a>
